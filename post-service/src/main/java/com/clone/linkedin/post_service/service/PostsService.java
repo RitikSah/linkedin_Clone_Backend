@@ -1,0 +1,37 @@
+package com.clone.linkedin.post_service.service;
+
+import com.clone.linkedin.post_service.dto.PostCreateRequestDto;
+import com.clone.linkedin.post_service.dto.PostDto;
+import com.clone.linkedin.post_service.entity.Post;
+import com.clone.linkedin.post_service.exception.ResourceNotFoundException;
+import com.clone.linkedin.post_service.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class PostsService {
+
+    private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
+
+    public PostDto create(PostCreateRequestDto postCreateRequestDto, long userId) {
+        Post post = modelMapper.map(postRepository,Post.class);
+        post.setUserId(userId);
+
+        Post savedPost = postRepository.save(post);
+        return modelMapper.map(savedPost,PostDto.class);
+    }
+
+    public PostDto getPostById(Long postId) {
+        log.debug("Retrieving post with ID : {}" , postId);
+
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new ResourceNotFoundException("Post not found with id: " + postId));
+
+        return modelMapper.map(post,PostDto.class);
+    }
+}
