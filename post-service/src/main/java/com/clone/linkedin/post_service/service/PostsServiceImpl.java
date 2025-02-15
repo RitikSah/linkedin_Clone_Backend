@@ -11,14 +11,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
-public class PostsService {
+@RequiredArgsConstructor
+public class PostsServiceImpl implements PostService{
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
 
-    public PostDto create(PostCreateRequestDto postCreateRequestDto, long userId) {
+    public PostDto createPost(PostCreateRequestDto postCreateRequestDto, long userId) {
         Post post = modelMapper.map(postRepository,Post.class);
         post.setUserId(userId);
 
