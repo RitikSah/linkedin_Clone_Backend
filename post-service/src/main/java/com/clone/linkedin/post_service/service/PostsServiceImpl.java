@@ -19,7 +19,7 @@ public class PostsServiceImpl implements PostService{
     private final ModelMapper modelMapper;
 
     public PostDto createPost(PostCreateRequestDto postCreateRequestDto, long userId) {
-        Post post = modelMapper.map(postRepository,Post.class);
+        Post post = modelMapper.map(postCreateRequestDto,Post.class);
         post.setUserId(userId);
 
         Post savedPost = postRepository.save(post);
