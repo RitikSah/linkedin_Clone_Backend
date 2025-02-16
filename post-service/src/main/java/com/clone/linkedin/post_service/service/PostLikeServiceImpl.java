@@ -18,7 +18,7 @@ public class PostLikeServiceImpl implements PostLikeService{
     private final PostLikeRepository postLikeRepository;
 
     @Override
-    public void likePost(Long postId, long userId) {
+    public void likePost(Long postId, Long userId) {
         log.info("Attempting to like the post with id: {}" , postId);
 
         boolean exists = postRepository.existsById(postId);
@@ -34,5 +34,19 @@ public class PostLikeServiceImpl implements PostLikeService{
 
         postLikeRepository.save(postLike);
         log.info("Post with id: {} liked successfully" , postId);
+    }
+
+    @Override
+    public void unlikePost(Long postId, Long userId) {
+        log.info("Attempting to unlike the post with id: {}" , postId);
+
+        boolean exists = postRepository.existsById(postId);
+        if(!exists) throw new ResourceNotFoundException("Post not found with id: " + postId);
+
+        boolean alreadyLiked = postLikeRepository.existsByUserIdAndPostId(userId,postId);
+        if(!alreadyLiked) throw new BadRequestException("Cannot unlike the post which is not liked.");
+
+        postLikeRepository.deleteByUserIdAndPostId(userId,postId);
+        log.info("Post with id: {} unliked successfully" , postId);
     }
 }
