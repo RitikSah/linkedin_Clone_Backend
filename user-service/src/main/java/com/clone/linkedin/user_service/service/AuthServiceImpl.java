@@ -24,14 +24,20 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public UserDto signUp(SignUpRequestDto signUpRequestDto) {
+
+        boolean exists = userRepository.existsByEmail(signUpRequestDto.getEmail());
+        if(exists) throw new BadRequestException("User already exists, cannot signup again.");
+
         User user = modelMapper.map(signUpRequestDto,User.class);
         user.setPassword(PasswordUtils.hashPassword(signUpRequestDto.getPassword()));
+
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override
     public String login(LoginRequestDto loginRequestDto) {
+
         User user = userRepository.findByEmail(loginRequestDto.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + loginRequestDto.getEmail()));
 
