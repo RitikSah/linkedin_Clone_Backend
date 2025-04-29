@@ -1,5 +1,6 @@
 package com.clone.linkedin.post_service.controller;
 
+import com.clone.linkedin.post_service.auth.UserContextHolder;
 import com.clone.linkedin.post_service.dto.PostCreateRequestDto;
 import com.clone.linkedin.post_service.dto.PostDto;
 import com.clone.linkedin.post_service.service.PostService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/core")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -22,7 +23,9 @@ public class PostController {
     public ResponseEntity<PostDto> createPost(@RequestBody PostCreateRequestDto postCreateRequestDto,
                                               HttpServletRequest httpServletRequest){
 
-        PostDto createdPost = postService.createPost(postCreateRequestDto,1L);
+        Long userId = UserContextHolder.getCurrentUserId();
+
+        PostDto createdPost = postService.createPost(postCreateRequestDto, userId);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
