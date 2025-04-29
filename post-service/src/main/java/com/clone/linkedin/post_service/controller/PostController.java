@@ -25,7 +25,7 @@ public class PostController {
 
         Long userId = UserContextHolder.getCurrentUserId();
 
-        PostDto createdPost = postService.createPost(postCreateRequestDto, userId);
+        PostDto createdPost = postService.createPost(postCreateRequestDto, 1L);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
