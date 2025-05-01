@@ -15,5 +15,5 @@ public class Person {
 
     private Long userId;
 
-    private String Name;
+    private String name;
 }

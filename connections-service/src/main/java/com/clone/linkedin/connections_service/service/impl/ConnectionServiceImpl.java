@@ -98,4 +98,10 @@ public class ConnectionServiceImpl implements ConnectionsService {
        personRepository.rejectConnectionRequest(senderId, receiverId);
         return true;
     }
+
+    @Override
+    public Person addPerson(Person person) {
+        return personRepository.addPerson(person.getName(), person.getUserId());
+//        return personRepository.save(person);
+    }
 }

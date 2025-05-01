@@ -3,6 +3,7 @@ package com.clone.linkedin.connections_service.controller;
 import com.clone.linkedin.connections_service.entity.Person;
 import com.clone.linkedin.connections_service.service.ConnectionsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,12 @@ public class ConnectionsController {
 
     private final ConnectionsService connectionsService;
 
+    @PostMapping("/addPerson")
+    public ResponseEntity<Person> addPerson(@RequestBody Person person){
+        Person savedPerson = connectionsService.addPerson(person);
+        return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
+    }
+
     @GetMapping("/first-degree")
     public ResponseEntity<List<Person>> getFirstConnections(){
         return ResponseEntity.ok(connectionsService.getFirstDegreeConnections());
@@ -25,7 +32,7 @@ public class ConnectionsController {
         return ResponseEntity.ok(connectionsService.sendConnectionRequest(userId));
     }
 
-    @PostMapping("/request/{userId}")
+    @PostMapping("/accept/{userId}")
     public ResponseEntity<Boolean> acceptConnectionRequest(@PathVariable Long userId){
         return ResponseEntity.ok(connectionsService.acceptConnectionRequest(userId));
     }

@@ -11,6 +11,9 @@ public interface PersonRepository extends Neo4jRepository<Person,Long> {
 
     Optional<Person> getByName(String name);
 
+    @Query("CREATE (p:Person {name: $name , userId: $userId}) return p")
+    Person addPerson(String name, Long userId);
+
     @Query("MATCH (personA:Person) -[:CONNECTED_TO]- (personB:Person) " +
             "WHERE personA.userId = $userId " +
             "RETURN personB")

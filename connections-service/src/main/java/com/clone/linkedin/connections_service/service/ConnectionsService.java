@@ -12,4 +12,6 @@ public interface ConnectionsService {
     Boolean acceptConnectionRequest(Long userId);
 
     Boolean rejectConnectionRequest(Long userId);
+
+    Person addPerson(Person person);
 }

@@ -14,15 +14,20 @@ import org.springframework.web.server.ServerWebExchange;
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
     private final JwtService jwtService;
+    private final RouteValidator routeValidator;
 
-    public AuthenticationFilter(JwtService jwtService){
+    public AuthenticationFilter(JwtService jwtService, RouteValidator routeValidator){
         super(Config.class);
         this.jwtService = jwtService;
+        this.routeValidator = routeValidator;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
+            if(!routeValidator.isSecured.test(exchange.getRequest())){
+                return chain.filter(exchange);
+            }
             log.info("Login Request: {}", exchange.getRequest().getURI());
 
             final String tokenHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
