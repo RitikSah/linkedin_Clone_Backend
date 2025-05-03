@@ -32,7 +32,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             final String tokenHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
-            if(tokenHeader == null || tokenHeader.startsWith("Bearer")){
+            if(tokenHeader == null || !tokenHeader.startsWith("Bearer")){
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 log.error("Authorization token header not found");
                 return exchange.getResponse().setComplete();

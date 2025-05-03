@@ -19,12 +19,12 @@ public interface PersonRepository extends Neo4jRepository<Person,Long> {
             "RETURN personB")
     List<Person> getFirstDegreeConnections(Long userId);
 
-    @Query("MATCH (personA:Person) -[:REQUESTED_TO]-> (personB:Person) " +
+    @Query("MATCH (personA:Person) -[r:REQUESTED_TO]-> (personB:Person) " +
             "WHERE personA.userId = $senderId AND personB.userId = $receiverId " +
             "RETURN count(r) > 0")
     boolean connectionRequestExists(Long senderId, Long receiverId);
 
-    @Query("MATCH (personA:Person) -[:CONNECTED_TO]- (personB:Person) " +
+    @Query("MATCH (personA:Person) -[r:CONNECTED_TO]- (personB:Person) " +
             "WHERE personA.userId = $senderId AND personB.userId = $receiverId " +
             "RETURN count(r) > 0")
     boolean alreadyConnected(Long senderId, Long receiverId);

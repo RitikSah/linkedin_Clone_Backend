@@ -39,12 +39,12 @@ public class ConnectionServiceImpl implements ConnectionsService {
         if(senderId.equals(receiverId)) throw new RuntimeException("Both senderId and receiverId is same.");
 
         boolean alreadySentRequest = personRepository.connectionRequestExists(senderId,receiverId);
-        if(!alreadySentRequest){
+        if(alreadySentRequest){
             throw new RuntimeException("Connection Request already exists, cannot send again");
         }
 
         boolean alreadyConnected = personRepository.alreadyConnected(senderId,receiverId);
-        if(!alreadyConnected){
+        if(alreadyConnected){
                 throw new RuntimeException("Already Connected users, Cannot add connection Request");
         }
 
